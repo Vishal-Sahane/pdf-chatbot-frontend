@@ -17,10 +17,16 @@ export default function ChatScreen() {
   const { fileName, fileId, totalPages } = useSelector((state) => state.pdf);
 
   const [input, setInput] = useState("");
-  const bottomRef = useRef(null);
+  const messageAreaRef = useRef(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const messageArea = messageAreaRef.current;
+    if (messageArea) {
+      messageArea.scrollTo({
+        top: messageArea.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages]);
 
   const handleNewPdf = () => {
@@ -35,7 +41,7 @@ export default function ChatScreen() {
     dispatch(addUserMessage(question));
     dispatch(setLoading(true));
     try {
-      const response = await axios.post("http://localhost:8000/chat", {
+      const response = await axios.post("http://192.168.1.118:8000/chat", {
         file_id: fileId,
         question,
       });
@@ -58,18 +64,18 @@ export default function ChatScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F0D08] flex flex-col">
+      <div className="h-dvh w-full max-w-full min-w-0 bg-[#0F0D08] flex flex-col overflow-hidden">
       {/* Glow Effect */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-96 h-64 bg-amber-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[min(24rem,100vw)] h-64 bg-amber-600/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Header */}
-      <div className="bg-[#1A1608] border-b border-[#2E2510] px-4 py-3 flex items-center justify-between z-10">
-        <div className="flex items-center gap-3">
+      <div className="shrink-0 bg-[#1A1608] border-b border-[#2E2510] px-4 py-3 flex items-center justify-between gap-3 z-10">
+        <div className="flex items-center gap-3 min-w-0 flex-1">
           <div className="w-7 h-7 bg-amber-500 rounded-lg flex items-center justify-center text-black text-xs font-bold">
             P
           </div>
-          <div>
-            <p className="text-white text-sm font-medium truncate max-w-[200px] md:max-w-md">
+          <div className="min-w-0 flex-1">
+            <p className="text-white text-sm font-medium max-w-full min-w-0 whitespace-normal break-all">
               {fileName}
             </p>
             <p className="text-gray-600 text-xs">
@@ -80,14 +86,14 @@ export default function ChatScreen() {
 
         <button
           onClick={handleNewPdf}
-          className="text-xs text-gray-400 hover:text-white bg-[#221C09] hover:bg-[#2A2210] border border-[#2E2510] hover:border-amber-500/50 px-3 py-1.5 rounded-lg transition-all duration-200"
+          className="shrink-0 text-xs text-gray-400 hover:text-white bg-[#221C09] hover:bg-[#2A2210] border border-[#2E2510] hover:border-amber-500/50 px-3 py-1.5 rounded-lg transition-all duration-200"
         >
           + New PDF
         </button>
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+      <div ref={messageAreaRef} className="flex-1 min-h-0 min-w-0 overflow-y-auto overflow-x-hidden overscroll-y-contain px-4 py-6 space-y-4">
         {/* Welcome Message */}
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-3 mt-20">
@@ -97,7 +103,7 @@ export default function ChatScreen() {
             <p className="text-gray-500 text-sm text-center">
               Ask your first question about
             </p>
-            <p className="text-amber-400 text-sm font-medium text-center">
+            <p className="text-violet-400 text-sm font-medium text-center w-full min-w-0 px-8 whitespace-normal break-all">
               {fileName}
             </p>
           </div>
@@ -121,7 +127,7 @@ export default function ChatScreen() {
       msg.role === "user"
         ? "bg-violet-600 text-white rounded-br-sm font-medium"
         : "bg-[#16162A] border border-[#2A2A45] text-gray-200 rounded-bl-sm"
-    }`}
+    } break-words [overflow-wrap:anywhere]`}
             >
               {msg.role === "user" ? (
                 msg.text
@@ -180,11 +186,10 @@ export default function ChatScreen() {
           </div>
         )}
 
-        <div ref={bottomRef} />
       </div>
 
       {/* Input Area */}
-      <div className="bg-[#1A1608] border-t border-[#2E2510] px-4 py-4 z-10">
+      <div className="shrink-0 bg-[#1A1608] border-t border-[#2E2510] px-4 py-4 z-10">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-3 bg-[#221C09] border border-[#2E2510] focus-within:border-amber-500/50 rounded-xl px-4 py-2 transition-colors duration-200">
             <textarea
@@ -193,7 +198,7 @@ export default function ChatScreen() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Ask a question about your PDF..."
-              className="flex-1 bg-transparent text-white text-sm placeholder-gray-600 resize-none outline-none py-1"
+              className="flex-1 min-w-0 bg-transparent text-white text-sm placeholder-gray-600 resize-none outline-none py-1"
             />
             <button
               onClick={handleSend}

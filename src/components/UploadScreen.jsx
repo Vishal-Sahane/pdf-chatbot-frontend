@@ -56,7 +56,7 @@ export default function UploadScreen() {
     dispatch(uploadStart());
     try {
       const response = await axios.post(
-        "http://localhost:8000/pdf/upload",
+        "http://192.168.1.118:8000/pdf/upload",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } },
       );
@@ -69,12 +69,12 @@ export default function UploadScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F0F1A] flex flex-col items-center justify-center px-4">
+    <div className="min-h-screen w-full max-w-full min-w-0 bg-[#0F0F1A] flex flex-col items-center justify-center px-4 overflow-x-hidden">
       {/* Glow Effect */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-violet-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(24rem,100vw)] h-96 bg-violet-600/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Logo */}
-      <div className="mb-10 text-center z-10">
+      <div className="mb-10 w-full max-w-full text-center z-10">
         <div className="flex items-center justify-center gap-2 mb-3">
           <div className="w-8 h-8 bg-violet-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
             P
@@ -83,19 +83,19 @@ export default function UploadScreen() {
             PDF Chatbot
           </h1>
         </div>
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-500 text-sm break-words">
           Upload a PDF and start asking questions instantly
         </p>
       </div>
 
       {/* Upload Card */}
-      <div className="w-full max-w-lg bg-[#16162A] border border-[#2A2A45] rounded-2xl p-8 z-10">
+      <div className="w-full max-w-lg min-w-0 bg-[#16162A] border border-[#2A2A45] rounded-2xl p-5 sm:p-8 z-10">
         {/* Drag & Drop Zone */}
         <div
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
-          className={`border-2 border-dashed rounded-xl p-12 flex flex-col items-center justify-center cursor-pointer transition-all duration-300
+          className={`w-full max-w-full min-w-0 border-2 border-dashed rounded-xl p-6 sm:p-12 flex flex-col items-center justify-center cursor-pointer transition-all duration-300
             ${
               isDragging
                 ? "border-violet-500 bg-violet-500/10 scale-[1.02]"
@@ -112,8 +112,8 @@ export default function UploadScreen() {
           </div>
 
           {selectedFile ? (
-            <div className="text-center">
-              <p className="text-green-400 text-sm font-medium">
+            <div className="text-center w-full max-w-full min-w-0">
+              <p className="text-green-400 text-sm font-medium text-center w-full max-w-full min-w-0 px-2 whitespace-normal break-all">
                 {selectedFile.name}
               </p>
               <p className="text-gray-600 text-xs mt-1">
@@ -205,9 +205,9 @@ export default function UploadScreen() {
       </div>
 
       {/* Bottom Tag */}
-     
-      <p className="text-gray-500 text-xs mt-8 z-10 tracking-wide">
-        ✦ Instant answers &nbsp;·&nbsp; ✦ Any PDF &nbsp;·&nbsp; ✦ AI powered
+
+      <p className="w-full max-w-full text-gray-500 text-xs text-center mt-8 z-10 tracking-wide break-words">
+        ✦ Instant answers · ✦ Any PDF · ✦ AI powered
       </p>
     </div>
   );

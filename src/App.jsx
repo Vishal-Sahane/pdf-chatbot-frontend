@@ -6,7 +6,7 @@ export default function App() {
   const isUploaded = useSelector((state) => state.pdf.isUploaded)
 
   return (
-    <main className="min-h-screen bg-gray-950 text-white">
+    <main className={`${isUploaded ? 'fixed inset-0 h-dvh overflow-hidden' : 'min-h-screen'} bg-gray-950 text-white`}>
       {isUploaded ? <ChatScreen /> : <UploadScreen />}
     </main>
   )
